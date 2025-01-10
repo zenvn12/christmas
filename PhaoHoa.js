@@ -336,51 +336,6 @@ const skyLightingSelector = () => +store.state.config.skyLighting;
 const scaleFactorSelector = () => store.state.config.scaleFactor;
 
 
-
-// Help Content
-const helpContent = {
-	shellType: {
-		header: 'Loại Pháo Hoa',
-		body: 'Loại pháo hoa sẽ được phóng. Chọn "Ngẫu nhiên" để có một loại đẹp!'
-	},
-	shellSize: {
-		header: 'Kích thước pháo hoa',
-		body: 'Kích thước của pháo hoa. Được mô phỏng theo kích thước đạn pháo hoa thật, đạn pháo lớn hơn có các vụ nổ lớn hơn với nhiều ngôi sao hơn và đôi khi hiệu ứng phức tạp hơn. Tuy nhiên, vỏ lớn hơn cũng đòi hỏi nhiều sức mạnh xử lý hơn và có thể gây ra độ trễ.'
-	},
-	quality: {
-		header: 'Chất Lượng Đồ Họa',
-		body: 'Chất lượng đồ họa tổng thể. Nếu hoạt ảnh không chạy trơn tru, hãy thử giảm chất lượng. Chất lượng cao làm tăng đáng kể lượng tia lửa điện và có thể gây ra độ trễ.'
-	},
-	skyLighting: {
-		header: 'Hiệu Ứng Bầu Trời ',
-		body: 'Thắp sáng hậu cảnh khi pháo hoa phát nổ. Nếu nền trông quá sáng trên màn hình của bạn, hãy thử đặt nó thành "Dim" hoặc "None".'
-	},
-	scaleFactor: {
-		header: 'Chuỗi Pháo Hoa',
-		body: 'Cho phép chia tỷ lệ kích thước của tất cả pháo hoa, về cơ bản là di chuyển bạn đến gần hoặc xa hơn. Đối với kích thước vỏ lớn hơn, có thể thuận tiện khi giảm tỷ lệ một chút, đặc biệt là trên điện thoại hoặc máy tính bảng.'
-	},
-	autoLaunch: {
-		header: 'Tự Động Bắn Pháo Hoa',
-		body: 'Tự động khởi động các chuỗi pháo hoa. Ngồi lại và thưởng thức chương trình, hoặc tắt để có toàn quyền kiểm soát.'
-	},
-	finaleMode: {
-		header: 'Chế Độ Cuối Cùng ',
-		body: 'Tung ra những vụ pháo hoa dữ dội. Có thể gây ra độ trễ. Yêu cầu bật "Tự động bắn".'
-	},
-	hideControls: {
-		header: 'Ẩn Điều Khiển',
-		body: 'Ẩn các điều khiển mờ dọc theo đầu màn hình. Hữu ích cho ảnh chụp màn hình hoặc chỉ là trải nghiệm liền mạch hơn. Trong khi ẩn, bạn vẫn có thể nhấn vào góc trên cùng bên phải để mở lại menu này.'
-	},
-	fullscreen: {
-		header: 'Toàn Màn Hình',
-		body: 'Chuyển đổi chế độ toàn màn hình.'
-	},
-	longExposure: {
-		header: 'Mở màn trập',
-		body: 'Hiệu ứng thử nghiệm bảo toàn các vệt sáng dài, tương tự như để cửa trập máy ảnh mở.'
-	}
-};
-
 const nodeKeyToHelpKey = {
 	shellTypeLabel: 'shellType',
 	shellSizeLabel: 'shellSize',
