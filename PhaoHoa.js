@@ -52,7 +52,7 @@ const IS_HIGH_END_DEVICE = (() => {
 	}
 	// Large screens indicate a full size computer, which often have hyper threading these days.
 	// So a quad core desktop machine has 8 cores. We'll place a higher min threshold there.
-	const minCount = window.innerWidth <= 024 ? 4 : 8;
+	const minCount = window.innerWidth <= 1024 ? 4 : 8;
 	return hwConcurrency >= minCount;
 })();
 // Prevent canvases from getting too large on ridiculous screen sizes.
@@ -60,12 +60,12 @@ const IS_HIGH_END_DEVICE = (() => {
 const MAX_WIDTH = 7680;
 const MAX_HEIGHT = 4320;
 const GRAVITY = 0.9; // Acceleration in px/s
-let simSpeed = ;
+let simSpeed = 1;
 
 function getDefaultScaleFactor() {
 	if (IS_MOBILE) return 0.9;
 	if (IS_HEADER) return 0.75;
-	return ;
+	return 1;
 }
 
 // Width/height values that take scale into account.
@@ -73,23 +73,23 @@ function getDefaultScaleFactor() {
 let stageW, stageH;
 
 // All quality globals will be overwritten and updated via `configDidUpdate`.
-let quality = ;
+let quality = 1;
 let isLowQuality = false;
 let isNormalQuality = true;
 let isHighQuality = false;
 
-const QUALITY_LOW = ;
+const QUALITY_LOW = 1;
 const QUALITY_NORMAL = 2;
 const QUALITY_HIGH = 3;
 
 const SKY_LIGHT_NONE = 0;
-const SKY_LIGHT_DIM = ;
+const SKY_LIGHT_DIM = 1;
 const SKY_LIGHT_NORMAL = 2;
 
 const COLOR = {
 	Red: '#ff0043',
-	Green: '#4fc56',
-	Blue: '#e7fff',
+	Green: '#14fc56',
+	Blue: '#1e7fff',
 	Purple: '#e60aff',
 	Gold: '#ffbf36',
 	White: '#ffffff'
@@ -164,7 +164,7 @@ const store = {
 			size: IS_DESKTOP
 				? '3' // Desktop default
 				: IS_HEADER 
-					? '.2' // Profile header default (doesn't need to be an int)
+					? '1.2' // Profile header default (doesn't need to be an int)
 					: '2', // Mobile default
 			autoLaunch: true,
 			finale: false,
@@ -199,12 +199,12 @@ const store = {
 			
 			const config = this.state.config;
 			switch(schemaVersion) {
-				case '.':
+				case '1.1':
 					config.quality = data.quality;
 					config.size = data.size;
 					config.skyLighting = data.skyLighting;
 					break;
-				case '.2':
+				case '1.2':
 					config.quality = data.quality;
 					config.size = data.size;
 					config.skyLighting = data.skyLighting;
@@ -216,7 +216,7 @@ const store = {
 			console.log(`Loaded config (schema version ${schemaVersion})`);
 		}
 		// Deprecated data format. Checked with care (it's not namespaced).
-		else if (localStorage.getItem('schemaVersion') === '') {
+		else if (localStorage.getItem('schemaVersion') === '1') {
 			let size;
 			// Attempt to parse data, ignoring if there is an error.
 			try {
@@ -229,7 +229,7 @@ const store = {
 				return;
 			}
 			// Only restore validated values
-			const sizeInt = parseInt(size, 0);
+			const sizeInt = parseInt(size, 10);
 			if (sizeInt >= 0 && sizeInt <= 4) {
 				this.state.config.size = String(sizeInt);
 			}
@@ -239,7 +239,7 @@ const store = {
 	persist() {
 		const config = this.state.config;
 		localStorage.setItem('cm_fireworks_data', JSON.stringify({
-			schemaVersion: '.2',
+			schemaVersion: '1.2',
 			data: {
 				quality: config.quality,
 				size: config.size,
@@ -310,7 +310,7 @@ function configDidUpdate() {
 		appNodes.canvasContainer.style.backgroundColor = '#000';
 	}
 	
-	Spark.drawWidth = quality === QUALITY_HIGH ? 0.75 : ;
+	Spark.drawWidth = quality === QUALITY_HIGH ? 0.75 : 1;
 }
 
 // Selectors
@@ -453,7 +453,7 @@ function renderApp(state) {
 	appNodes.controls.classList.toggle('hide', state.menuOpen || state.config.hideControls);
 	appNodes.canvasContainer.classList.toggle('blur', state.menuOpen);
 	appNodes.menu.classList.toggle('hide', !state.menuOpen);
-	appNodes.finaleModeFormOption.style.opacity = state.config.autoLaunch ?  : 0.32;
+	appNodes.finaleModeFormOption.style.opacity = state.config.autoLaunch ? 1 : 0.32;
 	
 	appNodes.quality.value = state.config.quality;
 	appNodes.shellType.value = state.config.shell;
@@ -1277,7 +1277,7 @@ function updateGlobals(timeStep, lag) {
 	// auto launch shells
 	if (store.state.config.autoLaunch) {
 		autoLaunchTime -= timeStep;
-		if (autoLaunchTime <= 1) {
+		if (autoLaunchTime <= 0) {
 			autoLaunchTime = startSequence() * 1.25;
 		}
 	}
