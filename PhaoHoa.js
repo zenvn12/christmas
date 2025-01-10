@@ -934,6 +934,7 @@ function launchShellFromConfig(event) {
 // -----------
 
 function seqRandomShell() {
+	setInterval(startSequence, 500); // Bắn mỗi 200ms
 	const size = getRandomShellSize();
 	const shell = new Shell(shellFromConfig(size.size));
 	shell.launch(size.x, size.height);
@@ -1106,6 +1107,15 @@ let isFirstSeq = true;
 const finaleCount = 32;
 let currentFinaleCount = 0;
 function startSequence() {
+	if (isTet()) {
+        	// Chế độ bắn siêu nhanh
+        	seqRandomFastShell(); // Loại pháo hoa nhanh
+        	return 50; // 50ms giữa các lần bắn
+    		} else {
+       		 // Bắn pháo hoa thông thường
+        		return seqRandomShell(); // Tốc độ thường
+    		}
+	}
 	if (isFirstSeq) {
 		isFirstSeq = false;
 		if (IS_HEADER) {
