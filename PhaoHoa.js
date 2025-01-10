@@ -298,15 +298,6 @@ function toggleSound(toggle) {
 	}
 }
 
-function toggleMenu(toggle) {
-    if (typeof toggle === 'boolean') {
-        store.setState({ menuOpen: toggle }); // Mở hoặc đóng menu dựa trên `toggle`
-    } else {
-        store.setState({ menuOpen: !store.state.menuOpen }); // Đảo trạng thái menu
-    }
-    renderApp(store.state); // Đồng bộ giao diện
-}
-
 function updateConfig(nextConfig) {
 	nextConfig = nextConfig || getConfigFromDOM();
 	store.setState({
@@ -369,8 +360,6 @@ const appNodes = {
 	stageContainer: '.stage-container',
 	canvasContainer: '.canvas-container',
 	controls: '.controls',
-	menu: '.menu',
-	menuInnerWrap: '.menu__inner-wrap',
 	pauseBtn: '.pause-btn',
 	pauseBtnSVG: '.pause-btn use',
 	soundBtn: '.sound-btn',
@@ -1163,10 +1152,6 @@ function handlePointerStart(event) {
 		}
 		if (event.x > mainStage.width/2 - btnSize/2 && event.x < mainStage.width/2 + btnSize/2) {
 			toggleSound();
-			return;
-		}
-		if (event.x > mainStage.width - btnSize) {
-			toggleMenu();
 			return;
 		}
 	}
