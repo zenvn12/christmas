@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	};
   
 	const targetDate = new Date("January 29, 2025 00:00:00").getTime();
+	function isTet() {
+    const now = new Date().getTime();
+    return now >= targetDate; // Nếu đã qua thời gian mục tiêu
+}
   
 	function updateCountdown() {
 	  const now = new Date().getTime();
@@ -1130,7 +1134,16 @@ function startSequence() {
 			return 6000;
 		}
 	}
-	
+   	if (isTet()) {
+        // Chế độ bắn siêu nhanh
+        seqRandomFastShell(); // Loại pháo hoa nhanh
+        return 50; // 50ms giữa các lần bắn
+    } else {
+        // Bắn pháo hoa thông thường
+        return seqRandomShell(); // Tốc độ thường
+    }
+}
+
 	const rand = Math.random();
 	
 	if (rand < 0.08 && Date.now() - seqSmallBarrage.lastCalled > seqSmallBarrage.cooldown) {
