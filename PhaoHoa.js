@@ -1159,7 +1159,6 @@ function startSequence() {
 	else if (rand < 1) {
 		return seqTriple();
 	}
-}
 
 
 let activePointerCount = 0;
