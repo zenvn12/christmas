@@ -285,9 +285,9 @@ function toggleSound(toggle) {
 	}
 }
 
-function toggleMenu(toggle) {
+function toggleMenu(false) {
 	if (typeof toggle === 'boolean') {
-		store.setState({ menuOpen: toggle });
+		store.setState({ menuOpen: false });
 	} else {
 		store.setState({ menuOpen: !store.state.menuOpen });
 	}
