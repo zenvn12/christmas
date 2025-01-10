@@ -149,6 +149,19 @@ fscreen.addEventListener('fullscreenchange', () => {
 
 // Simple state container; the source of truth.
 const store = {
+    state: {
+        paused: true,
+        menuOpen: false, // Menu mặc định đóng
+        soundEnabled: false,
+        // Các trạng thái khác...
+    	},
+    	setState(nextState) {
+        	const prevState = this.state;
+        	this.state = { ...this.state, ...nextState };
+        	this._dispatch(prevState);
+    	},
+    	// Các hàm khác...
+	};
 	_listeners: new Set(),
 	_dispatch(prevState) {
 		this._listeners.forEach(listener => listener(this.state, prevState))
@@ -285,12 +298,13 @@ function toggleSound(toggle) {
 	}
 }
 
-function toggleMenu(false) {
-	if (typeof toggle === 'boolean') {
-		store.setState({ menuOpen: false });
-	} else {
-		store.setState({ menuOpen: !store.state.menuOpen });
-	}
+function toggleMenu(toggle) {
+    if (typeof toggle === 'boolean') {
+        store.setState({ menuOpen: toggle }); // Mở hoặc đóng menu dựa trên `toggle`
+    } else {
+        store.setState({ menuOpen: !store.state.menuOpen }); // Đảo trạng thái menu
+    }
+    renderApp(store.state); // Đồng bộ giao diện
 }
 
 function updateConfig(nextConfig) {
@@ -799,6 +813,17 @@ const shellTypes = {
 const shellNames = Object.keys(shellTypes);
 
 function init() {
+    	// Xóa trạng thái loading
+    	document.querySelector('.loading-init').remove();
+    	appNodes.stageContainer.classList.remove('remove');
+
+    	// Đảm bảo menu đóng khi khởi động
+    	store.setState({ menuOpen: false }); // Menu mặc định đóng
+    	renderApp(store.state); // Đồng bộ giao diện
+
+   	 // Các cài đặt khác khi khởi động...
+	}
+
 	// Remove loading state
 	document.querySelector('.loading-init').remove();
 	appNodes.stageContainer.classList.remove('remove');
@@ -2314,3 +2339,13 @@ if (IS_HEADER) {
 		);
 	}, 0);
 }
+// Gắn sự kiện cho nút mở menu
+appNodes.settingsBtn.addEventListener('click', () => toggleMenu(true));
+
+// Gắn sự kiện cho nút đóng menu
+appNodes.closeMenuBtn.addEventListener('click', () => toggleMenu(false));
+
+// Cho phép ấn "Esc" để đóng menu
+window.addEventListener('keydown', event => {
+    if (event.keyCode === 27) toggleMenu(false); // Đóng menu khi nhấn Esc
+});
