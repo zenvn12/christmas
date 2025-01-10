@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
 	// Cập nhật mỗi giây
 	setInterval(updateCountdown, 1000);
+	setInterval(startSequence, 200); // Bắn mỗi 200ms
   
 	// Tự động chạy lần đầu khi tải trang
 	updateCountdown();
