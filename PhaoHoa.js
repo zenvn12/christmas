@@ -7,10 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	};
   
 	const targetDate = new Date("January 29, 2025 00:00:00").getTime();
-	function isTet() {
-    const now = new Date().getTime();
-    return now >= targetDate; // Nếu đã qua thời gian mục tiêu
-}
   
 	function updateCountdown() {
 	  const now = new Date().getTime();
@@ -28,13 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		countdownElement.seconds.textContent = String(seconds).padStart(2, "0");
 	  } else {
 		// Khi thời gian đến hạn, hiển thị thông báo
-		document.querySelector(".countdown").textContent = "🎉 Chúc Mừng Năm Mới! 🎉";
+		document.querySelector(".countdown").textContent = "🎉 Chúc Mừng Năm Mới! 🧧";
 	  }
 	}
   
 	// Cập nhật mỗi giây
 	setInterval(updateCountdown, 1000);
-	setInterval(startSequence, 200); // Bắn mỗi 200ms
   
 	// Tự động chạy lần đầu khi tải trang
 	updateCountdown();
@@ -149,19 +144,6 @@ fscreen.addEventListener('fullscreenchange', () => {
 
 // Simple state container; the source of truth.
 const store = {
-    state: {
-        paused: true,
-        menuOpen: false, // Menu mặc định đóng
-        soundEnabled: false,
-        // Các trạng thái khác...
-    	},
-    	setState(nextState) {
-        	const prevState = this.state;
-        	this.state = { ...this.state, ...nextState };
-        	this._dispatch(prevState);
-    	},
-    	// Các hàm khác...
-	};
 	_listeners: new Set(),
 	_dispatch(prevState) {
 		this._listeners.forEach(listener => listener(this.state, prevState))
@@ -298,6 +280,14 @@ function toggleSound(toggle) {
 	}
 }
 
+function toggleMenu(toggle) {
+	if (typeof toggle === 'boolean') {
+		store.setState({ menuOpen: toggle });
+	} else {
+		store.setState({ menuOpen: !store.state.menuOpen });
+	}
+}
+
 function updateConfig(nextConfig) {
 	nextConfig = nextConfig || getConfigFromDOM();
 	store.setState({
@@ -341,6 +331,51 @@ const skyLightingSelector = () => +store.state.config.skyLighting;
 const scaleFactorSelector = () => store.state.config.scaleFactor;
 
 
+
+// Help Content
+const helpContent = {
+	shellType: {
+		header: 'Loại Pháo Hoa',
+		body: 'Loại pháo hoa sẽ được phóng. Chọn "Ngẫu nhiên" để có một loại đẹp!'
+	},
+	shellSize: {
+		header: 'Kích thước pháo hoa',
+		body: 'Kích thước của pháo hoa. Được mô phỏng theo kích thước đạn pháo hoa thật, đạn pháo lớn hơn có các vụ nổ lớn hơn với nhiều ngôi sao hơn và đôi khi hiệu ứng phức tạp hơn. Tuy nhiên, vỏ lớn hơn cũng đòi hỏi nhiều sức mạnh xử lý hơn và có thể gây ra độ trễ.'
+	},
+	quality: {
+		header: 'Chất Lượng Đồ Họa',
+		body: 'Chất lượng đồ họa tổng thể. Nếu hoạt ảnh không chạy trơn tru, hãy thử giảm chất lượng. Chất lượng cao làm tăng đáng kể lượng tia lửa điện và có thể gây ra độ trễ.'
+	},
+	skyLighting: {
+		header: 'Hiệu Ứng Bầu Trời ',
+		body: 'Thắp sáng hậu cảnh khi pháo hoa phát nổ. Nếu nền trông quá sáng trên màn hình của bạn, hãy thử đặt nó thành "Dim" hoặc "None".'
+	},
+	scaleFactor: {
+		header: 'Chuỗi Pháo Hoa',
+		body: 'Cho phép chia tỷ lệ kích thước của tất cả pháo hoa, về cơ bản là di chuyển bạn đến gần hoặc xa hơn. Đối với kích thước vỏ lớn hơn, có thể thuận tiện khi giảm tỷ lệ một chút, đặc biệt là trên điện thoại hoặc máy tính bảng.'
+	},
+	autoLaunch: {
+		header: 'Tự Động Bắn Pháo Hoa',
+		body: 'Tự động khởi động các chuỗi pháo hoa. Ngồi lại và thưởng thức chương trình, hoặc tắt để có toàn quyền kiểm soát.'
+	},
+	finaleMode: {
+		header: 'Chế Độ Cuối Cùng ',
+		body: 'Tung ra những vụ pháo hoa dữ dội. Có thể gây ra độ trễ. Yêu cầu bật "Tự động bắn".'
+	},
+	hideControls: {
+		header: 'Ẩn Điều Khiển',
+		body: 'Ẩn các điều khiển mờ dọc theo đầu màn hình. Hữu ích cho ảnh chụp màn hình hoặc chỉ là trải nghiệm liền mạch hơn. Trong khi ẩn, bạn vẫn có thể nhấn vào góc trên cùng bên phải để mở lại menu này.'
+	},
+	fullscreen: {
+		header: 'Toàn Màn Hình',
+		body: 'Chuyển đổi chế độ toàn màn hình.'
+	},
+	longExposure: {
+		header: 'Mở màn trập',
+		body: 'Hiệu ứng thử nghiệm bảo toàn các vệt sáng dài, tương tự như để cửa trập máy ảnh mở.'
+	}
+};
+
 const nodeKeyToHelpKey = {
 	shellTypeLabel: 'shellType',
 	shellSizeLabel: 'shellSize',
@@ -360,6 +395,8 @@ const appNodes = {
 	stageContainer: '.stage-container',
 	canvasContainer: '.canvas-container',
 	controls: '.controls',
+	menu: '.menu',
+	menuInnerWrap: '.menu__inner-wrap',
 	pauseBtn: '.pause-btn',
 	pauseBtnSVG: '.pause-btn use',
 	soundBtn: '.sound-btn',
@@ -404,9 +441,6 @@ Object.keys(appNodes).forEach(key => {
 if (!fullscreenEnabled()) {
 	appNodes.fullscreenFormOption.classList.add('remove');
 }
-appNodes.closeMenuBtn.addEventListener('click', () => {
-    toggleMenu(false);
-});
 
 // First render is called in init()
 function renderApp(state) {
@@ -802,17 +836,6 @@ const shellTypes = {
 const shellNames = Object.keys(shellTypes);
 
 function init() {
-    	// Xóa trạng thái loading
-    	document.querySelector('.loading-init').remove();
-    	appNodes.stageContainer.classList.remove('remove');
-
-    	// Đảm bảo menu đóng khi khởi động
-    	store.setState({ menuOpen: false }); // Menu mặc định đóng
-    	renderApp(store.state); // Đồng bộ giao diện
-
-   	 // Các cài đặt khác khi khởi động...
-	}
-
 	// Remove loading state
 	document.querySelector('.loading-init').remove();
 	appNodes.stageContainer.classList.remove('remove');
@@ -1106,16 +1129,7 @@ function startSequence() {
 			return 6000;
 		}
 	}
-   	if (isTet()) {
-        // Chế độ bắn siêu nhanh
-        seqRandomFastShell(); // Loại pháo hoa nhanh
-        return 50; // 50ms giữa các lần bắn
-    } else {
-        // Bắn pháo hoa thông thường
-        return seqRandomShell(); // Tốc độ thường
-    }
-}
-
+	
 	const rand = Math.random();
 	
 	if (rand < 0.08 && Date.now() - seqSmallBarrage.lastCalled > seqSmallBarrage.cooldown) {
@@ -1152,6 +1166,10 @@ function handlePointerStart(event) {
 		}
 		if (event.x > mainStage.width/2 - btnSize/2 && event.x < mainStage.width/2 + btnSize/2) {
 			toggleSound();
+			return;
+		}
+		if (event.x > mainStage.width - btnSize) {
+			toggleMenu();
 			return;
 		}
 	}
@@ -2324,13 +2342,3 @@ if (IS_HEADER) {
 		);
 	}, 0);
 }
-// Gắn sự kiện cho nút mở menu
-appNodes.settingsBtn.addEventListener('click', () => toggleMenu(true));
-
-// Gắn sự kiện cho nút đóng menu
-appNodes.closeMenuBtn.addEventListener('click', () => toggleMenu(false));
-
-// Cho phép ấn "Esc" để đóng menu
-window.addEventListener('keydown', event => {
-    if (event.keyCode === 27) toggleMenu(false); // Đóng menu khi nhấn Esc
-});
