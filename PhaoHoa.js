@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		countdownElement.seconds.textContent = String(seconds).padStart(2, "0");
 	  } else {
 		// Khi thời gian đến hạn, hiển thị thông báo
-		document.querySelector(".countdown").textContent = "🎉 Chúc Mừng Năm Mới! 🧧";
+		document.querySelector(".countdown").textContent = "🎉 Chúc Mừng Năm Mới! 🎉";
 	  }
 	}
   
