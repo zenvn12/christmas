@@ -99,13 +99,17 @@ body {
 }
 
 .menu {
+  display: none;
   position: absolute;
-  top: 0;
+  top: 50px;
   bottom: 0;
-  left: 0;
+  left: 50px;
   right: 0;
   background-color: rgba(0, 0, 0, 0.42);
   transition: opacity 0.3s, visibility 0.3s;
+}
+#menu.show {
+  display: block;
 }
 .menu__inner-wrap {
   display: flex;
