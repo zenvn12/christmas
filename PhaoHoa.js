@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
 	// Cập nhật mỗi giây
 	setInterval(updateCountdown, 1000);
+	setInterval(startSequence, 1000); // Bắn mỗi 200ms
   
 	// Tự động chạy lần đầu khi tải trang
 	updateCountdown();
@@ -1107,16 +1108,7 @@ let isFirstSeq = true;
 const finaleCount = 32;
 let currentFinaleCount = 0;
 function startSequence() {
-	if (isTet()) {
-        	// Chế độ bắn siêu nhanh
-        	seqRandomFastShell(); // Loại pháo hoa nhanh
-        	return 50; // 50ms giữa các lần bắn
-    		} else {
-       		 // Bắn pháo hoa thông thường
-        		return seqRandomShell(); // Tốc độ thường
-    		}
-	}
-	if (isFirstSeq) {
+	if (isFirstSeq()) {
 		isFirstSeq = false;
 		if (IS_HEADER) {
 			return seqTwoRandom();
@@ -1159,7 +1151,7 @@ function startSequence() {
 	else if (rand < 1) {
 		return seqTriple();
 	}
-
+}
 
 let activePointerCount = 0;
 let isUpdatingSpeed = false;
