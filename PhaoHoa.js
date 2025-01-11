@@ -152,7 +152,7 @@ const store = {
 	
 	state: {
 		// will be unpaused in init()
-		paused: true,
+		paused: false,
 		soundEnabled: false,
 		menuOpen: false,
 		openHelpTopic: null,
@@ -281,9 +281,9 @@ function toggleSound(toggle) {
 	}
 }
 
-function toggleMenu(toggle) {
+function toggleMenu(false) {
 	if (typeof toggle === 'boolean') {
-		store.setState({ menuOpen: toggle });
+		store.setState({ menuOpen: false });
 	} else {
 		store.setState({ menuOpen: !store.state.menuOpen });
 	}
@@ -445,12 +445,14 @@ if (!fullscreenEnabled()) {
 
 // First render is called in init()
 function renderApp(state) {
+	const menu = document.querySelector('.menu');
 	const canvasContainer = document.querySelector('.canvas-container');
     	canvasContainer.classList.toggle('blur', state.menuOpen);
 	const pauseBtnIcon = `#icon-${state.paused ? 'play' : 'pause'}`;
 	const soundBtnIcon = `#icon-sound-${soundEnabledSelector() ? 'on' : 'off'}`;
 	const pauseBtn = document.querySelector('.pause-btn use');
 	pauseBtn.setAttribute('href', state.paused ? '#icon-play' : '#icon-pause');
+	menu.classList.toggle('hide', !state.menuOpen);
 	appNodes.pauseBtnSVG.setAttribute('href', pauseBtnIcon);
 	appNodes.pauseBtnSVG.setAttribute('xlink:href', pauseBtnIcon);
 	appNodes.soundBtnSVG.setAttribute('href', soundBtnIcon);
@@ -844,6 +846,7 @@ function init() {
 	// Remove loading state
 	document.querySelector('.loading-init').remove();
 	appNodes.stageContainer.classList.remove('remove');
+	document.querySelector('.stage-container').classList.remove('remove');
 	
     	// Đồng bộ trạng thái menu
     	store.setState({ menuOpen: false, paused: false }); // Đảm bảo không tạm dừng khi khởi động
