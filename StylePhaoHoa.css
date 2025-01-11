@@ -23,6 +23,7 @@ body {
 .hide {
   opacity: 0;
   visibility: hidden;
+  display: none !important;
 }
 
 .remove {
