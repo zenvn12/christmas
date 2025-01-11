@@ -315,6 +315,12 @@ function configDidUpdate() {
 	Spark.drawWidth = quality === QUALITY_HIGH ? 0.75 : 1;
 }
 
+function closeMenu() {
+    // Cập nhật trạng thái để ẩn menu
+    store.setState({ menuVisible: false });
+    renderApp(store.state); // Render lại giao diện
+}
+
 // Selectors
 // -----------
 
