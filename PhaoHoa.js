@@ -899,7 +899,6 @@ function init() {
 	
 	// Apply initial config
 	configDidUpdate();
-}
 
 
 function fitShellPositionInBoundsH(position) {
