@@ -269,7 +269,7 @@ function togglePause(toggle) {
 	}
 
 	if (paused !== newValue) {
-		store.setState({ paused: newValue });
+		store.setState({ paused: false });
 	}
 }
 
@@ -445,8 +445,12 @@ if (!fullscreenEnabled()) {
 
 // First render is called in init()
 function renderApp(state) {
+	const canvasContainer = document.querySelector('.canvas-container');
+    	canvasContainer.classList.toggle('blur', state.menuOpen);
 	const pauseBtnIcon = `#icon-${state.paused ? 'play' : 'pause'}`;
 	const soundBtnIcon = `#icon-sound-${soundEnabledSelector() ? 'on' : 'off'}`;
+	const pauseBtn = document.querySelector('.pause-btn use');
+	pauseBtn.setAttribute('href', state.paused ? '#icon-play' : '#icon-pause');
 	appNodes.pauseBtnSVG.setAttribute('href', pauseBtnIcon);
 	appNodes.pauseBtnSVG.setAttribute('xlink:href', pauseBtnIcon);
 	appNodes.soundBtnSVG.setAttribute('href', soundBtnIcon);
@@ -841,6 +845,15 @@ function init() {
 	document.querySelector('.loading-init').remove();
 	appNodes.stageContainer.classList.remove('remove');
 	
+    	// Đồng bộ trạng thái menu
+    	store.setState({ menuOpen: false, paused: false }); // Đảm bảo không tạm dừng khi khởi động
+    	renderApp(store.state);
+
+    	// Khởi động pháo hoa
+    	startFireworks();
+    	attachEventListeners();
+	}
+	
 	// Populate dropdowns
 	function setOptionsForSelect(node, options) {
 		node.innerHTML = options.reduce((acc, opt) => acc += `<option value="${opt.value}">${opt.label}</option>`, '');
@@ -888,6 +901,16 @@ function init() {
 function fitShellPositionInBoundsH(position) {
 	const edge = 0.18;
 	return (1 - edge*2) * position + edge;
+}
+
+function startFireworks() {
+    function loop() {
+        if (!store.state.paused) {
+            startSequence(); // Gọi hàm khởi động pháo hoa
+        }
+        requestAnimationFrame(loop); // Lặp lại liên tục
+    }
+    loop();
 }
 
 function fitShellPositionInBoundsV(position) {
@@ -1115,6 +1138,8 @@ function startSequence() {
 		}
 		else {
 			const shell = new Shell(crysanthemumShell(shellSizeSelector()));
+			const positionX = Math.random(); // Tọa độ ngẫu nhiên
+    			const positionY = Math.random() * 0.5; // Vị trí tương đối trên màn hình
 			shell.launch(0.5, 0.5);
 			return 2400;
 		}
