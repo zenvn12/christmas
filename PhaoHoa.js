@@ -282,12 +282,13 @@ function toggleSound(toggle) {
 }
 
 function toggleMenu(toggle) {
-	if (typeof toggle === 'boolean') {
-		store.setState({ menuOpen: toggle });
-	} else {
-		store.setState({ menuOpen: !store.state.menuOpen });
-	}
+    if (typeof toggle === 'boolean') {
+        store.setState({ menuOpen: toggle });
+    } else {
+        store.setState({ menuOpen: !store.state.menuOpen });
+    }
 }
+
 
 function updateConfig(nextConfig) {
 	nextConfig = nextConfig || getConfigFromDOM();
@@ -850,10 +851,10 @@ function init() {
 	
     	// Đồng bộ trạng thái menu
     	store.setState({ menuOpen: false, paused: false }); // Đảm bảo không tạm dừng khi khởi động
+	startFireworks();
     	renderApp(store.state);
 
     	// Khởi động pháo hoa
-    	startFireworks();
     	attachEventListeners();
 	}
 	
@@ -909,7 +910,7 @@ function fitShellPositionInBoundsH(position) {
 function startFireworks() {
     function loop() {
         if (!store.state.paused) {
-            startSequence(); // Gọi hàm khởi động pháo hoa
+            startSequence(); // Pháo hoa khởi động
         }
         requestAnimationFrame(loop); // Lặp lại liên tục
     }
@@ -1198,7 +1199,6 @@ function handlePointerStart(event) {
 			return;
 		}
 		if (event.x > mainStage.width - btnSize) {
-			toggleMenu();
 			return;
 		}
 	}
@@ -1230,10 +1230,6 @@ function handleKeydown(event) {
 	// P
 	if (event.keyCode === 80) {
 		togglePause();
-	}
-	// O
-	else if (event.keyCode === 79) {
-		toggleMenu();
 	}
 	// Esc
 	else if (event.keyCode === 27) {
