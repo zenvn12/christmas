@@ -255,6 +255,12 @@ const store = {
 if (!IS_HEADER) {
 	store.load();
 }
+if (state.menuVisible) {
+    document.getElementById('menu').style.display = 'block'; // Hiển thị menu
+} else {
+    document.getElementById('menu').style.display = 'none'; // Ẩn menu
+}
+
 
 // Actions
 // ---------
