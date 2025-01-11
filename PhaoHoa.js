@@ -255,6 +255,7 @@ const store = {
 if (!IS_HEADER) {
 	store.load();
 }
+const state = store.state; // Đảm bảo state được gán từ store trước khi gọi
 if (state.menuVisible) {
     document.getElementById('menu').style.display = 'block'; // Hiển thị menu
 } else {
@@ -457,6 +458,7 @@ if (!fullscreenEnabled()) {
 }
 
 // First render is called in init()
+const soundEnabledSelector = document.getElementById('sound-checkbox');
 function renderApp(state) {
 	const menu = document.querySelector('.menu');
 	const canvasContainer = document.querySelector('.canvas-container');
@@ -493,6 +495,11 @@ function renderApp(state) {
 		appNodes.helpModalHeader.textContent = header;
 		appNodes.helpModalBody.textContent = body;
 	}
+   	if (soundEnabledSelector.checked) {
+        	console.log("Âm thanh đã bật");
+    	} else {
+        	console.log("Âm thanh đã tắt");
+    	}
 }
 
 store.subscribe(renderApp);
@@ -1145,9 +1152,13 @@ const sequences = [
 let isFirstSeq = true;
 const finaleCount = 32;
 let currentFinaleCount = 0;
+let isFirstSeq = false;
 function startSequence() {
 	if (isFirstSeq()) {
-		isFirstSeq = false;
+		console.log("Sequence already started.");
+		return;
+		}
+		isFirstSeq = true;
 		if (IS_HEADER) {
 			return seqTwoRandom();
 		}
@@ -1191,7 +1202,6 @@ function startSequence() {
 	else if (rand < 1) {
 		return seqTriple();
 	}
-}
 
 let activePointerCount = 0;
 let isUpdatingSpeed = false;
