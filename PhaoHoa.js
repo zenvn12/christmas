@@ -1,35 +1,39 @@
-// Đếm ngược đến Tết Âm lịch 2025 (ngày 10 tháng 2 năm 2025, 00:00:00)
-const lunarNewYearDate = new Date('2025-01-29T00:00:00'); // Ngày mục tiêu
+// Đếm ngược đến Tết Âm lịch 2025
+const lunarNewYearDate = new Date('2025-01-29T00:00:00'); // Thời gian mục tiêu
 
-// Cập nhật đếm ngược mỗi giây
+// Hàm cập nhật đồng hồ đếm ngược
 function updateCountdown() {
   const now = new Date();
   const timeDifference = lunarNewYearDate - now;
 
+  // Nếu hết thời gian, dừng đếm ngược
   if (timeDifference <= 0) {
-    // Khi hết thời gian, hiển thị chúc mừng
+    document.getElementById('days').textContent = '00';
     document.getElementById('hours').textContent = '00';
     document.getElementById('minutes').textContent = '00';
     document.getElementById('seconds').textContent = '00';
     document.querySelector('.countdown-text').textContent = 'CHÚC MỪNG NĂM MỚI!';
-    clearInterval(countdownInterval); // Dừng cập nhật đếm ngược
+    clearInterval(countdownInterval);
     return;
   }
 
-  const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+  // Tính toán ngày, giờ, phút, giây
+  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-  // Cập nhật nội dung hiển thị
+  // Cập nhật nội dung HTML
+  document.getElementById('days').textContent = String(days).padStart(2, '0');
   document.getElementById('hours').textContent = String(hours).padStart(2, '0');
   document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
   document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
 }
 
-// Bắt đầu cập nhật đếm ngược
+// Gọi hàm cập nhật mỗi giây
 const countdownInterval = setInterval(updateCountdown, 1000);
 
-// Chạy ngay lần đầu khi tải trang
+// Chạy ngay khi tải trang
 updateCountdown();
 'use strict';
 console.clear();
