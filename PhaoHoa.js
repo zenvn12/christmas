@@ -1280,7 +1280,7 @@ function updateGlobals(timeStep, lag) {
     autoLaunchTime -= timeStep;
     if (autoLaunchTime <= 0) {
       autoLaunchTime = startSequence() * 1.25;
-      setInterval(startSequence, 1000); // Bắn mỗi 1000ms
+      setInterval(startSequence, 1500); // Bắn mỗi 1500ms
     }
   }
 }
