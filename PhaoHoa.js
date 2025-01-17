@@ -1,3 +1,36 @@
+// Đếm ngược đến Tết Âm lịch 2025 (ngày 10 tháng 2 năm 2025, 00:00:00)
+const lunarNewYearDate = new Date('2025-02-10T00:00:00'); // Ngày mục tiêu
+
+// Cập nhật đếm ngược mỗi giây
+function updateCountdown() {
+  const now = new Date();
+  const timeDifference = lunarNewYearDate - now;
+
+  if (timeDifference <= 0) {
+    // Khi hết thời gian, hiển thị chúc mừng
+    document.getElementById('hours').textContent = '00';
+    document.getElementById('minutes').textContent = '00';
+    document.getElementById('seconds').textContent = '00';
+    document.querySelector('.countdown-text').textContent = 'CHÚC MỪNG NĂM MỚI!';
+    clearInterval(countdownInterval); // Dừng cập nhật đếm ngược
+    return;
+  }
+
+  const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+  // Cập nhật nội dung hiển thị
+  document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+  document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+}
+
+// Bắt đầu cập nhật đếm ngược
+const countdownInterval = setInterval(updateCountdown, 1000);
+
+// Chạy ngay lần đầu khi tải trang
+updateCountdown();
 'use strict';
 console.clear();
 
