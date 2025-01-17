@@ -1,5 +1,5 @@
 // Đếm ngược đến Tết Âm lịch 2025 (ngày 10 tháng 2 năm 2025, 00:00:00)
-const lunarNewYearDate = new Date('2025-02-10T00:00:00'); // Ngày mục tiêu
+const lunarNewYearDate = new Date('2025-01-29T00:00:00'); // Ngày mục tiêu
 
 // Cập nhật đếm ngược mỗi giây
 function updateCountdown() {
