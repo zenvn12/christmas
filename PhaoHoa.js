@@ -299,44 +299,44 @@ const scaleFactorSelector = () => store.state.config.scaleFactor;
 // Help Content
 const helpContent = {
   shellType: {
-    header: 'Shell Type',
-    body: 'The type of firework that will be launched. Select "Random" for a nice assortment!'
+    header: 'Loại vỏ bọc',
+    body: 'Loại pháo hoa sẽ được bắn. Chọn "Random" để có một loạt pháo hoa đẹp mắt!'
   },
   shellSize: {
-    header: 'Shell Size',
-    body: 'The size of the fireworks. Modeled after real firework shell sizes, larger shells have bigger bursts with more stars, and sometimes more complex effects. However, larger shells also require more processing power and may cause lag.'
+    header: 'Kích thước vỏ bọc',
+    body: 'Kích thước của pháo hoa. Được mô phỏng theo kích thước vỏ pháo hoa thực tế, vỏ lớn hơn có vụ nổ lớn hơn với nhiều ngôi sao hơn và đôi khi có hiệu ứng phức tạp hơn. Tuy nhiên, vỏ lớn hơn cũng đòi hỏi nhiều sức mạnh xử lý hơn và có thể gây ra lag.'
   },
   quality: {
-    header: 'Quality',
-    body: 'Overall graphics quality. If the animation is not running smoothly, try lowering the quality. High quality greatly increases the amount of sparks rendered and may cause lag.'
+    header: 'Chất lượng',
+    body: 'Chất lượng đồ họa tổng thể. Nếu hoạt ảnh không chạy mượt, hãy thử giảm chất lượng. Chất lượng cao làm tăng đáng kể lượng tia lửa được hiển thị và có thể gây ra lag.'
   },
   skyLighting: {
-    header: 'Sky Lighting',
-    body: 'Illuminates the background as fireworks explode. If the background looks too bright on your screen, try setting it to "Dim" or "None".'
+    header: 'Ánh sáng bầu trời',
+    body: 'Làm sáng nền khi pháo hoa nổ. Nếu nền trông quá sáng trên màn hình, hãy thử đặt thành "Dim" hoặc "None".'
   },
   scaleFactor: {
-    header: 'Scale',
-    body: 'Allows scaling the size of all fireworks, essentially moving you closer or farther away. For larger shell sizes, it can be convenient to decrease the scale a bit, especially on phones or tablets.'
+    header: 'Tỉ lệ',
+    body: 'Cho phép thay đổi kích thước của tất cả pháo hoa, về cơ bản là di chuyển bạn lại gần hoặc ra xa hơn. Đối với kích thước vỏ lớn hơn, có thể thuận tiện để giảm tỷ lệ một chút, đặc biệt là trên điện thoại hoặc máy tính bảng.'
   },
   autoLaunch: {
-    header: 'Auto Fire',
-    body: 'Launches sequences of fireworks automatically. Sit back and enjoy the show, or disable to have full control.'
+    header: 'Tự động bắn',
+    body: 'Tự động khởi chạy chuỗi pháo hoa. Ngồi lại và thưởng thức chương trình hoặc tắt để kiểm soát hoàn toàn.'
   },
   finaleMode: {
-    header: 'Finale Mode',
-    body: 'Launches intense bursts of fireworks. May cause lag. Requires "Auto Fire" to be enabled.'
+    header: 'Chế độ cuối cùng',
+    body: 'Phóng ra những loạt pháo hoa dữ dội. Có thể gây ra độ trễ. Cần phải bật "Tự động bắn".'
   },
   hideControls: {
-    header: 'Hide Controls',
-    body: 'Hides the translucent controls along the top of the screen. Useful for screenshots, or just a more seamless experience. While hidden, you can still tap the top-right corner to re-open this menu.'
+    header: 'Ẩn điều khiển',
+    body: 'Ẩn các điều khiển trong suốt dọc theo đầu màn hình. Hữu ích cho ảnh chụp màn hình hoặc chỉ là trải nghiệm liền mạch hơn. Trong khi ẩn, bạn vẫn có thể chạm vào góc trên bên phải để mở lại menu này.'
   },
   fullscreen: {
     header: 'Fullscreen',
-    body: 'Toggles fullscreen mode.'
+    body: 'Chuyển đổi chế độ toàn màn hình.'
   },
   longExposure: {
     header: 'Open Shutter',
-    body: 'Experimental effect that preserves long streaks of light, similar to leaving a camera shutter open.'
+    body: 'Hiệu ứng thử nghiệm giúp duy trì những vệt sáng dài, tương tự như khi mở màn trập máy ảnh.'
   }
 };
 
