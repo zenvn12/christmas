@@ -13,6 +13,37 @@
 <meta name="msapplication-TileImage" content="https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/firework-burst-icon-v2.png">
 <link href="https://fonts.googleapis.com/css?family=Russo+One" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 <link rel="stylesheet" href="./StylePhaoHoa.css">
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 20px;
+      color: #333;
+    }
+    .countdown-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 50px;
+    }
+    .countdown-box {
+      text-align: center;
+    }
+    .number {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #ff5733;
+    }
+    .label {
+      font-size: 1.2rem;
+      color: #555;
+    }
+  </style>
 
 </head>
 <body>
@@ -63,7 +94,7 @@
         <svg fill="white" width="24" height="24"><use href="#icon-settings" xlink:href="#icon-settings"></use></svg>
       </div>
     </div>
-  <h1 style="text-align: center;">Đếm Ngược Đến Tết Âm Lịch</h1>
+  <h1 style="text-align: center;">Đếm Ngược Đến Tết</h1>
   <div class="countdown-container">
     <div class="countdown-box">
       <div class="number" id="days">00</div>
@@ -82,15 +113,16 @@
       <div class="label">Giây</div>
     </div>
   </div>
-      <script>
-    // JavaScript đặt ở đây
-    const lunarNewYearDate = new Date('2025-01-29T00:00:00'); // Thời gian mục tiêu
+  <script>
+    // Thời gian mục tiêu là ngày Tết 2025
+    const lunarNewYearDate = new Date('2025-01-29T00:00:00');
 
     function updateCountdown() {
-      const now = new Date();
-      const timeDifference = lunarNewYearDate - now;
+      const now = new Date(); // Lấy thời gian hiện tại
+      const timeDifference = lunarNewYearDate - now; // Tính khoảng cách
 
       if (timeDifference <= 0) {
+        // Nếu thời gian đã hết, hiển thị toàn 0
         document.getElementById('days').textContent = '00';
         document.getElementById('hours').textContent = '00';
         document.getElementById('minutes').textContent = '00';
@@ -104,14 +136,16 @@
       const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
+      // Cập nhật nội dung hiển thị
       document.getElementById('days').textContent = String(days).padStart(2, '0');
       document.getElementById('hours').textContent = String(hours).padStart(2, '0');
       document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
       document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
     }
 
+    // Cập nhật mỗi giây
     const countdownInterval = setInterval(updateCountdown, 1000);
-    updateCountdown();
+    updateCountdown(); // Gọi ngay khi tải trang
   </script>
     <div class="menu hide">
       <div class="menu__inner-wrap">
