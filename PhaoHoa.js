@@ -331,11 +331,11 @@ const helpContent = {
     body: 'Ẩn các điều khiển trong suốt dọc theo đầu màn hình. Hữu ích cho ảnh chụp màn hình hoặc chỉ là trải nghiệm liền mạch hơn. Trong khi ẩn, bạn vẫn có thể chạm vào góc trên bên phải để mở lại menu này.'
   },
   fullscreen: {
-    header: 'Fullscreen',
+    header: 'Toàn màn hình',
     body: 'Chuyển đổi chế độ toàn màn hình.'
   },
   longExposure: {
-    header: 'Open Shutter',
+    header: 'Mở tràn mập',
     body: 'Hiệu ứng thử nghiệm giúp duy trì những vệt sáng dài, tương tự như khi mở màn trập máy ảnh.'
   }
 };
