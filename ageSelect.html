@@ -16,6 +16,7 @@
             background-size: 400% 400%;
             animation: rainbow 8s ease infinite;
             font-family: Arial, sans-serif;
+            position: relative; /* Để có thể đặt nút ở góc */
         }
 
         @keyframes rainbow {
@@ -62,6 +63,24 @@
             background-color: #45a049;
         }
 
+        /* Nút Back */
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #FF6347;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #FF4500;
+        }
+
         /* Pop-up dialog */
         .popup {
             display: none;
@@ -106,6 +125,9 @@
     </style>
 </head>
 <body>
+    <!-- Nút Back -->
+    <button class="back-button" onclick="window.history.back()">Back</button>
+
     <!-- Box nhập tuổi -->
     <div class="age-box">
         <h2>Vui lòng nhập tuổi</h2>
