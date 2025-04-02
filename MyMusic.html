@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Music</title>
+    <title>Nhạc của tao</title>
     <style>
         body {
             font-family: Bahnschrift Light;
@@ -16,6 +16,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative; /* Để có thể đặt nút ở góc */
         }
 
         @keyframes gradientBG {
@@ -61,11 +62,32 @@
             background-color: #218838;
         }
 
+        /* Nút Back */
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #FF4500;
+        }
+
     </style>
 </head>
 <body>
+    <!-- Nút Back -->
+    <button class="back-button" onclick="window.history.back()">Quay lại/button>
+
     <div class="menu-container">
-        <h2>My Music</h2>
+        <h2>Nhạc của tao làm ra - XVRMTA - tên tao</h2>
         <button onclick="location.href='https://zenproject.vercel.app//Phonk.html'">Phonk</button>
         <button onclick="location.href='https://zenproject.vercel.app//Funk.html'">Funk</button>
     </div>
