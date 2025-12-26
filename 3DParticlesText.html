@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<title>Particle Text</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html, body {
+  margin: 0;
+  overflow: hidden;
+  background: #0b0b0e;
+  font-family: system-ui;
+}
+
+#ui {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  background: rgba(20,20,30,0.6);
+  backdrop-filter: blur(10px);
+  padding: 14px;
+  border-radius: 14px;
+  color: white;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#textInput {
+  background: #111;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 8px 10px;
+  border-radius: 8px;
+  width: 220px;
+}
+
+input[type=color] {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+<div id="ui">
+  ✍️ <input id="textInput" maxlength="50" placeholder="Nhập chữ hoặc số..." />
+  🎨 <input type="color" id="colorPicker" value="#5aa9ff">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.158/build/three.min.js"></script>
+
+<script>
+/* ===== THREE ===== */
+const scene = new THREE.Scene()
+const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 1000)
+camera.position.z = 140
+
+const renderer = new THREE.WebGLRenderer({ antialias: true })
+renderer.setSize(innerWidth, innerHeight)
+renderer.setPixelRatio(devicePixelRatio)
+document.body.appendChild(renderer.domElement)
+
+/* ===== PARTICLES ===== */
+const COUNT = 3500
+const geometry = new THREE.BufferGeometry()
+const positions = new Float32Array(COUNT * 3)
+const base = []
+
+for (let i = 0; i < COUNT; i++) {
+  const x = (Math.random()-0.5)*60
+  const y = (Math.random()-0.5)*60
+  const z = (Math.random()-0.5)*60
+  positions.set([x,y,z], i*3)
+  base.push(new THREE.Vector3(x,y,z))
+}
+
+geometry.setAttribute('position', new THREE.BufferAttribute(positions,3))
+
+const material = new THREE.PointsMaterial({
+  size: 1.6,
+  color: 0x5aa9ff
+})
+
+const points = new THREE.Points(geometry, material)
+scene.add(points)
+
+/* COLOR */
+colorPicker.oninput = e => material.color.set(e.target.value)
+
+/* ===== TEXT SHAPE ===== */
+function textShape(text) {
+  const len = text.length || 1
+
+  // auto scale font
+  const fontSize = Math.max(60, 240 - len * 4)
+
+  const c = document.createElement('canvas')
+  c.width = 800
+  c.height = 300
+  const ctx = c.getContext('2d')
+
+  ctx.clearRect(0,0,c.width,c.height)
+  ctx.fillStyle = '#fff'
+  ctx.font = `bold ${fontSize}px Arial`
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(text, c.width/2, c.height/2)
+
+  const img = ctx.getImageData(0,0,c.width,c.height).data
+  const pts = []
+
+  for (let y=0;y<c.height;y+=4) {
+    for (let x=0;x<c.width;x+=4) {
+      const i = (y*c.width+x)*4
+      if (img[i] > 200) {
+        pts.push(new THREE.Vector3(
+          (x - c.width/2) * 0.35,
+          (c.height/2 - y) * 0.35,
+          0
+        ))
+      }
+    }
+  }
+  return pts
+}
+
+let target = base
+
+textInput.oninput = e => {
+  const txt = e.target.value.trim()
+  target = txt ? textShape(txt) : base
+}
+
+/* ===== LOOP ===== */
+function animate() {
+  requestAnimationFrame(animate)
+
+  const pos = geometry.attributes.position.array
+  for (let i=0;i<COUNT;i++) {
+    const t = target[i % target.length]
+    pos[i*3]   += (t.x - pos[i*3]) * 0.12
+    pos[i*3+1] += (t.y - pos[i*3+1]) * 0.12
+    pos[i*3+2] += (t.z - pos[i*3+2]) * 0.12
+  }
+
+  geometry.attributes.position.needsUpdate = true
+  points.rotation.y += 0.0015
+  renderer.render(scene,camera)
+}
+animate()
+
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(innerWidth, innerHeight)
+})
+</script>
+</body>
+</html>
