@@ -118,9 +118,25 @@ function textToPoints(text){
       }
     }
   }
+}
+function spherePoints(){
+  const pts=[]
+  const r=40
+
+  for(let i=0;i<COUNT;i++){
+    const u=Math.random()
+    const v=Math.random()
+    const theta=2*Math.PI*u
+    const phi=Math.acos(2*v-1)
+
+    pts.push(new THREE.Vector3(
+      r*Math.sin(phi)*Math.cos(theta),
+      r*Math.sin(phi)*Math.sin(theta),
+      r*Math.cos(phi)
+    ))
+  }
   return pts
 }
-
 let targetPoints = []
 
 /* ===== UI ===== */
