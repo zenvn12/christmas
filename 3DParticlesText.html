@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Hiệu ứng 3D Chữ</title>
+<title>Particle Text – Sphere Only</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -18,7 +18,7 @@ html,body{
   top:16px;
   left:16px;
   display:flex;
-  gap:8px;
+  gap:10px;
   padding:12px;
   background:rgba(20,20,30,.65);
   backdrop-filter:blur(10px);
@@ -26,7 +26,7 @@ html,body{
   z-index:10;
 }
 
-input,select{
+input{
   background:#111;
   color:white;
   border:none;
@@ -46,12 +46,6 @@ input[type=color]{
 <body>
 <div id="ui">
   <input id="textInput" maxlength="50" placeholder="Nhập chữ hoặc số">
-  <select id="shapeSelect">
-    <option value="square">⬜ Vuông</option>
-    <option value="sphere">⚪ Cầu</option>
-    <option value="star">⭐ Ngôi sao</option>
-    <option value="heart">❤️ Trái tim</option>
-  </select>
   <input type="color" id="colorPicker" value="#5aa9ff">
 </div>
 
@@ -69,71 +63,39 @@ renderer.setPixelRatio(devicePixelRatio)
 document.body.appendChild(renderer.domElement)
 
 /* ===== LIGHT ===== */
-scene.add(new THREE.AmbientLight(0xffffff,0.8))
-const dir = new THREE.DirectionalLight(0xffffff,0.6)
+scene.add(new THREE.AmbientLight(0xffffff,0.85))
+const dir=new THREE.DirectionalLight(0xffffff,0.6)
 dir.position.set(1,1,1)
 scene.add(dir)
 
-/* ===== DATA ===== */
-const COUNT = 2800
-let targetPoints = []
-let shapeType = "square"
+/* ===== PARTICLES ===== */
+const COUNT = 3000
+const sphereGeo = new THREE.SphereGeometry(0.9,10,10)
 
-const dummy = new THREE.Object3D()
-
-/* ===== MATERIAL ===== */
 const material = new THREE.MeshStandardMaterial({
   color:0x5aa9ff,
   roughness:0.35,
   metalness:0.1
 })
 
-/* ===== GEOMETRY FACTORY ===== */
-function createGeometry(type){
-  if(type==="square") return new THREE.BoxGeometry(1.4,1.4,1.4)
-  if(type==="sphere") return new THREE.SphereGeometry(0.9,10,10)
-
-  if(type==="star"){
-    const s = new THREE.Shape()
-    const spikes=5,r1=1,r2=.45
-    for(let i=0;i<spikes*2;i++){
-      const r=i%2?r2:r1
-      const a=i/(spikes*2)*Math.PI*2
-      const x=Math.cos(a)*r
-      const y=Math.sin(a)*r
-      i? s.lineTo(x,y):s.moveTo(x,y)
-    }
-    s.closePath()
-    return new THREE.ExtrudeGeometry(s,{depth:.5,bevelEnabled:false})
-  }
-
-  if(type==="heart"){
-    const s=new THREE.Shape()
-    s.moveTo(0,0)
-    s.bezierCurveTo(0,0,-1,-1,-2,0)
-    s.bezierCurveTo(-3,2,-1,4,0,3)
-    s.bezierCurveTo(1,4,3,2,2,0)
-    s.bezierCurveTo(1,-1,0,0,0,0)
-    return new THREE.ExtrudeGeometry(s,{depth:.6,bevelEnabled:false})
-  }
-}
-
-/* ===== INSTANCED MESH ===== */
-let mesh = new THREE.InstancedMesh(
-  createGeometry(shapeType),
+const mesh = new THREE.InstancedMesh(
+  sphereGeo,
   material,
   COUNT
 )
 scene.add(mesh)
 
+const dummy = new THREE.Object3D()
+
 /* ===== TEXT → POINTS ===== */
 function textToPoints(text){
-  const len = text.length||1
-  const fontSize = Math.max(60,240-len*4)
+  const len=text.length||1
+  const fontSize=Math.max(60,240-len*4)
 
   const c=document.createElement("canvas")
   c.width=800; c.height=300
   const ctx=c.getContext("2d")
+
   ctx.clearRect(0,0,800,300)
   ctx.fillStyle="#fff"
   ctx.font=`bold ${fontSize}px Arial`
@@ -143,6 +105,7 @@ function textToPoints(text){
 
   const img=ctx.getImageData(0,0,800,300).data
   const pts=[]
+
   for(let y=0;y<300;y+=4){
     for(let x=0;x<800;x+=4){
       const i=(y*800+x)*4
@@ -158,38 +121,16 @@ function textToPoints(text){
   return pts
 }
 
+let targetPoints = []
+
 /* ===== UI ===== */
 textInput.oninput=e=>{
-  const v=e.target.value.trim()
-  targetPoints = v?textToPoints(v):[]
+  const t=e.target.value.trim()
+  targetPoints = t?textToPoints(t):[]
 }
 
-colorPicker.oninput=e=>material.color.set(e.target.value)
-
-shapeSelect.onchange=e=>{
-  shapeType=e.target.value
-
-  if(shapeType==="star"){
-    if(confirm("Đổi sang màu vàng cho ngôi sao cho đẹp không?")){
-      material.color.set("#FFD54A")
-      colorPicker.value="#FFD54A"
-    }
-  }
-
-  if(shapeType==="heart"){
-    if(confirm("Đổi sang màu đỏ cho trái tim cho đẹp không?")){
-      material.color.set("#FF4B5C")
-      colorPicker.value="#FF4B5C"
-    }
-  }
-
-  scene.remove(mesh)
-  mesh=new THREE.InstancedMesh(
-    createGeometry(shapeType),
-    material,
-    COUNT
-  )
-  scene.add(mesh)
+colorPicker.oninput=e=>{
+  material.color.set(e.target.value)
 }
 
 /* ===== LOOP ===== */
