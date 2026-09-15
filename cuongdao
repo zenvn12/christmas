@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quà Tặng Bí Ẩn 💝</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Comic Sans MS', cursive;
+      overflow: hidden;
+      flex-direction: column;
+      position: relative;
+      /* Nền hồng gradient */
+      background: linear-gradient(135deg, #ffc1cc, #ff69b4, #ffb6c1);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+    }
+
+    /* Hiệu ứng nền gradient chuyển động nhẹ */
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Hộp quà */
+    .gift {
+      font-size: 100px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 2;
+      user-select: none;
+    }
+
+    .gift:hover {
+      transform: scale(1.1);
+    }
+
+    /* Nút vô hình */
+    button {
+      width: 120px;
+      height: 120px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      z-index: 3;
+    }
+
+    /* Trái tim to */
+    .heart {
+      font-size: 120px;
+      display: none;
+      animation: pop 0.5s ease;
+      z-index: 2;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Chữ hiện dần + rung */
+    .message {
+      font-size: 2em;
+      color: white;
+      text-shadow: 0 0 10px pink;
+      display: none;
+      margin-top: 20px;
+      z-index: 2;
+      pointer-events: none;
+      user-select: none;
+      animation: shake 1s infinite ease-in-out;
+    }
+
+    @keyframes shake {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(1px, -1px); }
+      50% { transform: translate(0, 1px); }
+      75% { transform: translate(-1px, -1px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* Icon rơi */
+    .falling {
+      position: fixed;
+      top: -50px;
+      font-size: 25px;
+      animation: fall linear forwards;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    /* Particle trái tim chuột */
+    .cursor-heart {
+      position: fixed;
+      pointer-events: none;
+      user-select: none;
+      font-size: 14px;
+      animation: fadeOut 0.7s forwards;
+      z-index: 2;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; transform: translateY(0) scale(1);}
+      100% { opacity: 0; transform: translateY(-15px) scale(0.5);}
+    }
+  </style>
+</head>
+<body>
+  <!-- Hộp quà -->
+  <div class="gift">🎁</div>
+  <button onclick="openGift()"></button>
+
+  <!-- Trái tim và chữ -->
+  <div class="heart">💗</div>
+  <div class="message" id="msg"></div>
+
+  <script>
+    const message = "cường đaoooooooooooo==========8"; // <== ĐỔI CHỖ NÀY
+    const preIcons = ["🎵","🎈","🌟","✨","🎉","🎶","💫"]; // Icon rơi trước khi bấm
+    const heartIcon = "💗"; // Icon rơi sau khi bấm
+
+    let giftOpened = false;
+
+    // Icon rơi ngẫu nhiên
+    function createFallingIcon(iconList, density=1) {
+      for(let i=0; i<density; i++) {
+        const icon = document.createElement('div');
+        icon.classList.add('falling');
+        icon.innerText = iconList[Math.floor(Math.random()*iconList.length)];
+        icon.style.left = Math.random()*100 + "vw";
+        icon.style.fontSize = (20 + Math.random()*20) + "px";
+        icon.style.animationDuration = (2 + Math.random()*3) + "s";
+        document.body.appendChild(icon);
+        setTimeout(()=>icon.remove(), 5000);
+      }
+    }
+
+    // Trước khi bấm: icon vui nhộn rơi nhiều
+    const preRain = setInterval(()=> {
+      if (!giftOpened) createFallingIcon(preIcons, 3); 
+    }, 200);
+
+    // Sau khi bấm nút
+    function openGift() {
+      giftOpened = true;
+      clearInterval(preRain);
+      document.querySelector('.gift').style.display = 'none';
+      document.querySelector('button').style.display = 'none';
+      const heart = document.querySelector('.heart');
+      const msgBox = document.getElementById('msg');
+
+      heart.style.display = 'block';
+      msgBox.style.display = 'block';
+
+      // Hiệu ứng gõ chữ
+      let i = 0;
+      const typing = setInterval(() => {
+        msgBox.textContent += message[i];
+        i++;
+        if (i >= message.length) clearInterval(typing);
+      }, 150);
+
+      // Bắt đầu rơi trái tim dày đặc
+      setInterval(()=> createFallingIcon([heartIcon], 5), 150); 
+    }
+
+    // Particle trái tim theo chuột (ít hơn)
+    let lastHeartTime = 0;
+    document.addEventListener('mousemove', e => {
+      const now = Date.now();
+      if (now - lastHeartTime > 120) { // 0.12s mỗi hạt
+        const particle = document.createElement('div');
+        particle.classList.add('cursor-heart');
+        particle.textContent = "💖";
+        particle.style.left = e.clientX + "px";
+        particle.style.top = e.clientY + "px";
+        document.body.appendChild(particle);
+        setTimeout(()=>particle.remove(), 700);
+        lastHeartTime = now;
+      }
+    });
+  </script>
+</body>
+</html>
